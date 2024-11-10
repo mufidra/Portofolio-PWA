@@ -8,12 +8,12 @@
     "description": "Mufida Anggradita's personal portfolio website.",
     "icons": [
         {
-            "src": "images/image-icon.png",
+            "src": "image-icon.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "images/image-icon.png",
+            "src": "image-icon.png",
             "sizes": "512x512",
             "type": "image/png"
         }
