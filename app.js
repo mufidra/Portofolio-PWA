@@ -33,7 +33,7 @@ navbarLinks.forEach(link => {
 
 // Service Worker registration
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/https://mufidra.github.io/sw.js').then(reg => {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
         console.log('Service Worker registered:', reg);
     }).catch(err => console.error('Service Worker registration failed:', err));
 }
@@ -70,13 +70,12 @@ function openDatabase() {
 
         // Upgrade needed to create object store
         request.onupgradeneeded = (event) => {
-            console.log('onupgradeneeded: Creating object store');
-            const db = event.target.result;
-            if (!db.objectStoreNames.contains(storeName)) {
-                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                console.log(`Object store "${storeName}" created.`);
-            }
-        };
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(storeName)) {
+            db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+            console.log(`Object store "${storeName}" created.`);
+        }
+    };
 
         request.onsuccess = (event) => {
             console.log('Database opened successfully');
