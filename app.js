@@ -66,65 +66,80 @@ const storeName = 'contacts';
 
 function openDatabase() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, 1); // Versi database = 1
+        const request = indexedDB.open(dbName, 1);
 
-        // Jika ada upgrade pada database, buat objek store
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            console.log("onupgradeneeded triggered");
-            
-            // Cek apakah objek store sudah ada
+            console.log("onupgradeneeded dipanggil");
+
+            // Cek apakah object store sudah ada; jika belum, buat
             if (!db.objectStoreNames.contains(storeName)) {
-                const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                console.log(`Object store "${storeName}" created.`);
+                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+                console.log(`Object store "${storeName}" dibuat.`);
             } else {
-                console.log(`Object store "${storeName}" already exists.`);
+                console.log(`Object store "${storeName}" sudah ada.`);
             }
         };
 
-        // Log ketika database berhasil dibuka
         request.onsuccess = (event) => {
-            console.log('Database opened successfully');
-            resolve(event.target.result); // Resolving database
+            console.log('Database berhasil dibuka');
+            resolve(event.target.result); // Mengembalikan database
         };
 
-        // Log error jika database gagal dibuka
         request.onerror = (event) => {
-            console.error('Database error:', event.target.errorCode);
-            reject(`Database error: ${event.target.errorCode}`);
+            console.error('Kesalahan database:', event.target.errorCode);
+            reject(`Kesalahan database: ${event.target.errorCode}`);
         };
     });
 }
 
-// Retrieve all contacts from IndexedDB
-async function getAllContacts() {
+// Fungsi untuk menambahkan kontak ke IndexedDB
+async function addContact(contact) {
     try {
-        const db = await openDatabase(); // Pastikan membuka database yang benar
-        if (!db.objectStoreNames.contains(storeName)) {
-            throw new Error(`Object store "${storeName}" does not exist.`);
-        }
-        const tx = db.transaction(storeName, 'readonly');
+        const db = await openDatabase();
+        const tx = db.transaction(storeName, 'readwrite');
         const store = tx.objectStore(storeName);
-        
-        const request = store.getAll(); // Ambil semua data kontak
 
-        request.onsuccess = (event) => {
-            console.log('All contacts:', event.target.result); // Menampilkan semua kontak di console
+        store.add(contact);
+
+        tx.oncomplete = () => {
+            console.log('Kontak ditambahkan ke IndexedDB:', contact);
+            getAllContacts();
         };
 
-        request.onerror = (event) => {
-            console.error('Error retrieving contacts:', event.target.error);
+        tx.onerror = (event) => {
+            console.error('Kesalahan saat menambahkan kontak:', event.target.error);
         };
     } catch (error) {
-        console.error("Error getting contacts:", error);
+        console.error("Kesalahan saat menambahkan kontak:", error);
     }
 }
 
-// Save contact from the form
+// Fungsi untuk mengambil semua kontak dari IndexedDB
+async function getAllContacts() {
+    try {
+        const db = await openDatabase();
+        const tx = db.transaction(storeName, 'readonly');
+        const store = tx.objectStore(storeName);
+
+        const request = store.getAll();
+
+        request.onsuccess = (event) => {
+            console.log('Semua kontak:', event.target.result);
+        };
+
+        request.onerror = (event) => {
+            console.error('Kesalahan saat mengambil kontak:', event.target.error);
+        };
+    } catch (error) {
+        console.error("Kesalahan saat mengambil kontak:", error);
+    }
+}
+
+// Menyimpan kontak dari form
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
-    
-    // Ambil data dari form
+
     const contact = {
         name: document.querySelector('input[placeholder="Full Name"]').value,
         email: document.querySelector('input[placeholder="Email"]').value,
@@ -132,24 +147,22 @@ document.querySelector('form').addEventListener('submit', (event) => {
         subject: document.querySelector('input[placeholder="Subject"]').value,
         message: document.querySelector('textarea[placeholder="Your Message"]').value
     };
-    
-    addContact(contact); // Menyimpan kontak ke IndexedDB
-    alert("Contact saved to database!");
 
-    // Reset form setelah data disimpan
-    document.querySelector('input[placeholder="Full Name"]').value = '';
-    document.querySelector('input[placeholder="Email"]').value = '';
-    document.querySelector('input[placeholder="Phone Number"]').value = '';
-    document.querySelector('input[placeholder="Subject"]').value = '';
-    document.querySelector('textarea[placeholder="Your Message"]').value = '';
+    addContact(contact);
+    alert("Kontak berhasil disimpan ke database!");
+
+    // Reset form
+    document.querySelector('form').reset();
 });
 
-// Test database initialization on page load
+// Inisialisasi database pada saat halaman dimuat
 window.onload = () => {
     openDatabase().then(() => {
-        console.log('IndexedDB should be initialized now.');
-        getAllContacts();  // Memastikan bahwa data sudah ada di IndexedDB
+        console.log('IndexedDB seharusnya sudah terinisialisasi sekarang.');
+        getAllContacts();
     }).catch(error => {
-        console.error('IndexedDB initialization failed:', error);
+        console.error('Inisialisasi IndexedDB gagal:', error);
     });
 };
+// Call getAllContacts to display data in console
+getAllContacts();
