@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+    <title>Profile Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="image icon" href="images/image-icon.png">
+</head>
+
+<!-- Tambahkan Firebase SDK di file HTML utama -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+<!-- index.html -->
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDeyih0XS5OagXvdzqRkIuv8i7zI1wvfIA",
+        authDomain: "portofolio-9f9aa.firebaseapp.com",
+        projectId: "portofolio-9f9aa",
+        storageBucket: "portofolio-9f9aa.firebasestorage.app",
+        messagingSenderId: "513246485833",
+        appId: "1:513246485833:web:74c1bbc050507c47564e98",
+        measurementId: "G-VV29KXSFYN"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    // Register Service Worker and use it in Firebase Messaging
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                // Set the service worker for Firebase Messaging
+                messaging.useServiceWorker(registration);
+                console.log('Service Worker berhasil didaftarkan:', registration);
+                
+                // Request permission and get token only after setting useServiceWorker
+                return messaging.getToken({vapidKey: "BIj-4Qr7MNXRqnq5koAR7g1-aZpj0_rwdYUZtTBNxGfyN7O8CzXrNevR9hEiQdeh49orRMriHdLnxhCMObLidwA"});
+            })
+            .then((token) => {
+                console.log("Device token:", token);
+            })
+            .catch((error) => {
+                console.error("Service Worker gagal didaftarkan atau gagal mendapatkan token:", error);
+            });
+    }
+
+    // Handle foreground messages
+    messaging.onMessage((payload) => {
+        console.log('Message received: ', payload);
+        const messagesElement = document.querySelector('.message');
+        const dataHeaderElement = document.createElement('h5');
+        const dataElement = document.createElement('pre');
+        dataHeaderElement.textContent = "Message Received:";
+        dataElement.textContent = JSON.stringify(payload, null, 2);
+        messagesElement.appendChild(dataHeaderElement);
+        messagesElement.appendChild(dataElement);
+    });
+</script>
+
+<body>
+    <header class="header">
+        <a href="#home" class="logo">Mufida <span>Anggradita</span></a>
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar" id="navbar">
+            <a href="#home" class="active">Home</a>
+            <a href="#education">Education</a>
+            <a href="#software">Software Skills</a>
+            <a href="#projects">Project</a>
+            <a href="#service">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="home" id="home">
+        <div class="home-content">
+            <h1>Hi, It's <span>Mufida</span></h1>
+            <h3 class="text-animation">I'm a College Student</h3>
+            <p>Halo nama saya Mufida Anggradita.</p>
+            <p>Saya adalah mahasiswa STMIK Tegal Prodi Sistem Informasi.</p>
+            <p>Saya lahir di Tegal, 15 September 2024. Saat ini saya tinggal di</p>
+            <p>Jalan Gajah Mada, Kota Tegal.</p>
+            <p>Berkuliah di Jurusan Sistem Informasi, saya mempunyai minat di bidang data analyst, design graphic, microsoft, dan management information system.</p>
+        
+            <div class="social-icons">
+                <a href="https://www.linkedin.com/in/mufida-anggradita-473262325/" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                <a href="https://github.com/mufidra" target="_blank"><i class='bx bxl-github'></i></a>
+                <a href="https://www.instagram.com/mufiiidra/" target="_blank"><i class='bx bxl-instagram-alt'></i></a>
+                <a href="https://www.youtube.com/@anggradita15" target="_blank"><i class='bx bxl-youtube'></i></a>
+            </div>
+            
+
+        <div class="btn-group">
+            <a href="#" class="btn">Hire</a>
+            <a href="#contact" class="btn">Contact</a>
+        </div>
+    </div>
+        <div class="home-img">
+            <img src="images/image.jpg" alt="">
+        </div>
+    </section>
+    <section class="education" id="education">
+        <h2 class="heading">Education</h2>
+            
+            <div class="timeline-items">
+
+                <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                    <div class="timeline-date">2019</div>
+                    <div class="timeline-content"><h3>High School</h3>
+                    <p>SMA N 2 TEGAL</p>
+                    <p>Tahun: 2019 - 2022</p>
+                    <p>Saya mengambil jurusan IPA di SMAN 2 Tegal.</p>
+                    <p>Di SMA, saya berfokus pada mata pelajaran science seperti fisika, biologi, dan kimia.</p>
+                    <p>Masa SMA memberikan pengalaman yang lebih mendalam dalam berbagai mata pelajaran.</p>
+                    </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                    <div class="timeline-date">2022</div>
+                    <div class="timeline-content"><h3>College</h3>
+                    <p>STMIK YMI TEGAL</p>
+                    <p>Tahun: 2022 - now</p>
+                    <p>Sekarang saya sedang menempuh pendidikan di STMIK YMI Tegal.</p>
+                    <p>Saya mengambil program S1 di jurusan Sistem Informasi.</p>
+                    <p>Mata kuliah saya berfokus di bidang IT, analisis sistem, dan manajemen bisnis.</p>
+                    <p>Saya juga aktif terlibat dalam orgnisasi BEM STMIK YMI Tegal pada periode 2024/2025 di Departemen Media Informasi.</P>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+            <section class="skills-section" id="software">
+                <h2 class="heading">Software <span>Skills</span></h2>
+                <div class="skills">
+                    <div class="skill">
+                        <i class="fas fa-file-word"></i>
+                        <p>Microsoft Word</p>
+                    </div>
+                    <div class="skill">
+                        <i class="fas fa-file-powerpoint"></i>
+                        <p>Microsoft PowerPoint</p>
+                    </div>
+                    <div class="skill">
+                        <i class="fas fa-file-excel"></i>
+                        <p>Microsoft Excel</p>
+                    </div>
+                    <div class="skill">
+                        <i class="fas fa-paint-brush"></i>
+                        <p>Canva</p>
+                    </div>
+                    <div class="skill">
+                        <i class="fas fa-code"></i>
+                        <p>Visual Studio Code</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="project-section">
+                <h2 class="heading"><span>My</span> Project</h2>
+                <div class="project-container">
+                    <!-- Project 1 -->
+                    <div class="project-card">
+                        <img src="images/image1.png" alt="Website Data Layanan">
+                        <div class="project-info">
+                            <h3>Website Data Layanan</h3>
+                            <p>Website sederhana untuk mendata layanan sebuah tempat kecantikan. Disini kita dapat upload data pesanan layanan dengan tampilan yang user-friendly sehingga mudah diakses siapapun. </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card">
+                        <img src="images/image2.png" alt="Design Graphic">
+                        <div class="project-info">
+                            <h3>Design Graphic</h3>
+                            <p>Kumpulan hasil desain grafis kreatif yang menampilkan gaya dan teknik yang berbeda. Termasuk poster, banner, grafik media sosial, dan proyek desain pribadi.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>            
+
+            <section class="service-section" id="service">
+                <h2 class="heading">Services</h2>
+                <div class="service-container">
+                    <!-- Kolom 1: Microsoft Office -->
+                    <div class="service-box">
+                        <h3>Microsoft Office</h3>
+                        <p>Document Editing & Formatting dalam Ms Word untuk membantu membuat dan mengedit dokumen secara profesional, seperti laporan, proposal, dan presentasi. Data Analysis & Reporting menggunakan Excel untuk analisis data, membuat grafik, dan menyusun laporan. Presentation Design di Ms Power Point untuk membuat presentasi yang menarik sesuai kebutuhan klien.</p>
+                    </div>
+            
+                    <!-- Kolom 2: Graphic Design -->
+                    <div class="service-box">
+                        <h3>Graphic Design</h3>
+                        <p>Keterampilan di aplikasi Canva untuk membuat desain grafis sederhana seperti poster, banner, dan sosial media post. Juga mendesain konten visual yang menarik untuk platform media sosial, sesuai tren dan branding yang diinginkan.</p>
+                    </div>
+            
+                    <!-- Kolom 3: Web Development -->
+                    <div class="service-box">
+                        <h3>Web Development</h3>
+                        <p>Membangun dan mengembangkan website sederhana menggunakan HTML, CSS, JavaScript, dan framework lainnya. Mampu memperbaiki atau mengoptimalkan kode yang sudah ada agar lebih efisien dan mudah dipahami untuk memastikan aplikasi berjalan dengan baik.</p>
+                    </div>
+                </div>
+            </section>
+
+    <section class="contact" id="contact">
+        <h2 class="heading">Contact <span>Me</span></h2>
+
+        <div class="contact-info">
+            <div class="info-box">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <h3>Email</h3>
+                    <p>mfdanggra152@gmail.com</p>
+                </div>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <h3>Phone</h3>
+                    <p>+82 878 7219 5718</p>
+                </div>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <h3>Location</h3>
+                    <p>JL. Gajah Mada Gg. Cerme, Kota Tegal, Jawa Tengah.</p>
+                </div>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-calendar-alt"></i>
+                <div>
+                    <h3>Available Hours</h3>
+                    <p>Monday - Sunday, 9 AM - 6 PM</p>
+                </div>
+            </div>
+        </div>
+
+        <form action="">
+            <div class="input-group">
+                <div class="input-box">
+                    <input type="text" placeholder="Full Name">
+                    <input type="email" placeholder="Email">
+                </div>
+                <div class="input-box">
+                    <input type="number" placeholder="Phone Number">
+                    <input type="text" placeholder="Subject">
+                </div>
+            </div>
+            <div class="input-group-2">
+                <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
+                <input type="submit" value="Send Message" class="btn">
+            </div>
+        </form>
+    </section>
+
+        <!-- Success Message -->
+    <div id="success-message" style="display: none; color: green; font-weight: bold;">
+        Send Message Success!
+    </div>
+    
+    <script>
+        function showSuccessMessage(event) {
+            event.preventDefault(); // Prevent form from actually submitting
+            document.getElementById("success-message").style.display = "block";
+            
+            // Optional: Hide the message after a few seconds
+            setTimeout(() => {
+                document.getElementById("success-message").style.display = "none";
+            }, 3000);
+        }
+    </script>
+
+    <button id="installButton" style="display: none;">
+        <span class="install-icon">⬇</span>
+        <span class="install-text">Install Aplikasi</span>
+    </button>    
+    
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/mufida-anggradita-473262325/" target="_blank"><i class='bx bxl-linkedin'></i></a>
+            <a href="https://github.com/mufidra" target="_blank"><i class='bx bxl-github'></i></a>
+            <a href="https://www.instagram.com/mufiiidra/" target="_blank"><i class='bx bxl-instagram-alt'></i></a>
+            <a href="https://www.youtube.com/@anggradita15" target="_blank"><i class='bx bxl-youtube'></i></a>
+        </div>
+
+        <ul class="list">
+            <li>
+                <a href="#home">About Me</a>
+            </li>
+            <li>
+                <a href="#education">Education</a>
+            </li>
+            <li>
+                <a href="#software">Software Skills</a>
+            </li>
+            <li>
+                <a href="#projects">Project</a>
+            </li>
+            <li>
+                <a href="#service">Service</a>
+            </li>
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+        <p class="copyright">@ Mufida Anggradita | All Rights Reserved</p>
+    </footer>
+
+    <script src="app.js"></script> <!-- Reference to the new app.js -->
+
+</body>
+</html>

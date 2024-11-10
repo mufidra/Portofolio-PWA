@@ -1,0 +1,21 @@
+{
+    "name": "Mufida Portfolio",
+    "short_name": "Portfolio",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#080808",
+    "theme_color": "#00ffee",
+    "description": "Mufida Anggradita's personal portfolio website.",
+    "icons": [
+        {
+            "src": "images/image-icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/image-icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

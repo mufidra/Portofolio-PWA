@@ -1,0 +1,981 @@
+/* Basic reset and variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --bg-color: #080808;
+    --second-bg-color: #131313;
+    --text-color: white;
+    --main-color: #00ffee;
+}
+
+/* General styling */
+html {
+    font-size: 60%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Header styling */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 12%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+}
+
+/* Logo styling */
+.logo {
+    font-size: 3rem;
+    color: var(--text-color);
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.logo span {
+    text-shadow: 0 0 25px var(--main-color);
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    gap: 2rem; /* Increase space between navigation links */
+    margin-left: auto;
+}
+
+.navbar a {
+    font-size: 1.8rem;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: var(--main-color);
+    border-bottom: 3px solid var(--main-color);
+}
+.nav-link {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-link.active {
+    color: cyan; /* Highlight color */
+    text-decoration: underline;
+}
+
+/* Menu icon styling */
+#menu-icon {
+    font-size: 4rem; /* Adjust size of the icon */
+    color: var(--main-color);
+    display: none; /* Hide menu icon by default */
+    cursor: pointer;
+}
+
+/* Media query for responsive view */
+@media (max-width: 768px) {
+    .navbar {
+        display: none; /* Hide navbar links in smaller screens */
+    }
+
+    #menu-icon {
+        display: block; /* Show menu icon in smaller screens */
+    }
+
+    .header {
+        padding: 2rem 5%; /* Reduce padding for mobile view */
+    }
+}
+
+section {
+    min-height: 100vh;
+    padding: 10rem 12% 10rem;
+}
+
+.home {
+    display: flex; /* Mengatur agar konten dan gambar berada dalam satu baris */
+    justify-content: space-between; /* Menempatkan konten dan gambar di sisi berlawanan */
+    align-items: center; /* Menyelaraskan secara vertikal */
+    flex-wrap: wrap; /* Agar elemen tetap rapi jika layar terlalu kecil */
+    margin-top: 3rem;
+}
+
+.home-content {
+    flex: 1; /* Agar konten mengisi ruang yang tersedia */
+}
+
+.home-img {
+    flex: 1; /* Agar gambar mengisi ruang yang tersisa */
+    text-align: right; /* Menempatkan gambar di sisi kanan */
+}
+
+span {
+    color: var(--main-color);
+}
+
+.logo span {
+    color: var(--main-color);
+}
+
+.home-content h3 {
+    margin-bottom: 2rem;
+    margin-top: 3rem;
+    font-size: 3.5rem;
+}
+
+.home-content h1 {
+    font-size: 7rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    line-height: 0.6;
+}
+
+.home-img img {
+    position: relative;
+    top: 3rem;
+    width: 32vw;
+    border-radius: 50%;
+    box-shadow: 0 0 25px var(--main-color);
+    cursor: pointer;
+    transition: 0.4s ease-in-out;
+    flex-shrink: 0; /* Agar gambar tidak mengecil */
+}
+
+.home-img img:hover {
+    box-shadow: 0 0 25px var(--main-color),
+                0 0 50px var(--main-color),
+                0 0 100px var(--main-color);
+}
+
+.home-content p {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.0;
+    max-width: 1000px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    background: transparent;
+    border: 2px solid var(--main-color);
+    font-size: 2.5rem;
+    border-radius: 50%;
+    color: var(--main-color);
+    margin: 3rem 1.5rem 3rem 0;
+    transition: 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+    color: var(--main-color);
+    transform: scale(1.3) translateY(-5px);
+    box-shadow: 0 0 25px var(--main-color);
+    background-color: var(--main-color);
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    background: var(--main-color);
+    box-shadow: 0 0 25px var(--main-color);
+    border-radius: 4rem;
+    font-size: 1.6rem;
+    color: black;
+    border: 2px solid transparent;
+    letter-spacing: 0.1rem;
+    font-weight: 600;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px var(--main-color);
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-group a:nth-of-type(2) {
+    background-color: black;
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+    box-shadow: 0 0 25px transparent;
+}
+
+.btn-group a:nth-of-type(2):hover {
+    box-shadow: 0 0 25px var(--main-color);
+    background-color: var(--main-color);
+    color: black;
+}
+
+.text-animation {
+    font-size: 34px;
+    font-weight: 600;
+    min-width: 250px;
+}
+
+.text-animation span {
+    position: relative;
+}
+
+.text-animation span:before {
+    content: "College Student";
+    color: var(--main-color);
+    animation: words 20s infinite;
+}
+
+.text-animation span:after {
+    content: "";
+    background-color: var(--bg-color);
+    position: absolute;
+    width: calc(100% + 8px);
+    height: 100%;
+    border-left: 3px solid var(--bg-color);
+    right: -8px;
+    animation: cursor 0.6s infinite, typing 20s steps(14) infinite;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .home {
+        flex-direction: column; /* Agar konten dan gambar tersusun secara vertikal di layar kecil */
+        align-items: center; /* Elemen-elemen diatur ke tengah */
+        text-align: center; /* Teks diatur ke tengah */
+    }
+
+    .home-content {
+        width: 100%; /* Konten mengisi lebar penuh */
+        margin-bottom: 2rem; /* Jarak antara konten dan gambar */
+    }
+
+    .home-content h1 {
+        font-size: 5rem; /* Ukuran teks lebih kecil di layar kecil */
+        line-height: 1.2; /* Menambah jarak antara garis teks */
+        word-break: break-word; /* Membuat teks tidak meluap dan terpotong */
+    }
+
+    .home-content h3 {
+        font-size: 2rem; /* Ukuran teks sub-judul lebih kecil */
+    }
+
+    .home-content p {
+        font-size: 1.2rem; /* Ukuran paragraf dikurangi */
+        margin: 0.5rem 0; /* Jarak antar paragraf */
+    }
+
+    .home-img {
+        width: 100%; /* Gambar mengambil lebar penuh */
+        text-align: center; /* Gambar di tengah */
+        margin-top: 1rem; /* Jarak atas gambar */
+    }
+
+    .home-img img {
+        width: 60vw; /* Ukuran gambar lebih kecil di layar kecil */
+        max-width: 300px; /* Batasi ukuran maksimum gambar */
+        top: 0; /* Hapus jarak atas gambar */
+    }
+
+    .social-icons {
+        justify-content: center; /* Ikon media sosial di tengah */
+    }
+
+    .btn-group {
+        flex-direction: column; /* Susun tombol secara vertikal */
+        gap: 1rem; /* Jarak antar tombol */
+        align-items: center; /* Tombol berada di tengah */
+    }
+}
+
+@media (max-width: 480px) {
+    .home-content h1 {
+        font-size: 3.5rem; /* Ukuran teks lebih kecil pada layar sangat kecil */
+        line-height: 1.2; /* Menjaga jarak antara baris */
+    }
+
+    .home-content h3 {
+        font-size: 1.5rem; /* Ukuran sub-judul lebih kecil */
+    }
+
+    .home-img img {
+        width: 70vw; /* Ukuran gambar lebih kecil di layar sangat kecil */
+    }
+}
+
+@keyframes cursor{
+    to{
+        border-left: 2px solid var(--main-color);
+    }
+}
+@keyframes words{
+    0%,
+    20%{
+    content: "College Student";
+    }
+}
+@keyframes typing{
+    10%,
+    15%,
+    30%,
+    35%,
+    50%,
+    70%,
+    75%,
+    90%,
+    95%{
+        width: 0;
+    }
+    5%,
+    20%,
+    25%,
+    40%,
+    45%,
+    60%,
+    65%,
+    80%,
+    85%{
+        width: calc(100% + 8px);
+    }
+}
+/* Mengatur heading */
+.heading{
+    font-size: 5rem; /* Ukuran font heading dikurangi */
+    text-align: center;
+    margin: 5rem 0;
+}
+
+/* Bagian education section */
+.education{
+    padding: 50px 15px; /* Padding dikurangi untuk tampilan lebih kompak */
+    background: var(--second-bg-color);
+}
+
+/* Judul untuk education section */
+.education h2{
+    margin-bottom: 5rem;
+}
+
+/* Container untuk timeline items */
+.timeline-items{
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+}
+
+/* Garis vertikal di tengah timeline */
+.timeline-items::before{
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 100%;
+    background-color: var(--main-color);
+    left: calc(50% - 2.5px); /* Mengatur posisi garis vertikal di tengah */
+}
+
+/* Style untuk setiap item pada timeline */
+.timeline-item{
+    width: 100%;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start; /* Pastikan item tetap diurutkan dengan benar */
+    align-items: flex-start;
+}
+
+/* Timeline item ganjil (left aligned) */
+.timeline-item:nth-child(odd){
+    justify-content: flex-end; /* Item ganjil (odd) di kiri */
+    text-align: right; /* Text alignment ke kanan */
+    padding-right: calc(50% + 20px);
+}
+
+/* Timeline item genap (right aligned) */
+.timeline-item:nth-child(even){
+    justify-content: flex-start; /* Item genap (even) di kanan */
+    text-align: left; /* Text alignment ke kiri */
+    padding-left: calc(50% + 20px);
+}
+
+/* Dot pada setiap item timeline */
+.timeline-dot{
+    height: 15px;
+    width: 15px;
+    background-color: var(--main-color);
+    position: absolute;
+    left: calc(50% - 7.5px); /* Pastikan dot berada di tengah */
+    border-radius: 50%;
+    top: 10px;
+}
+
+/* Style untuk tanggal pada timeline */
+.timeline-date {
+    font-size: 2rem; /* Ukuran font tanggal disesuaikan */
+    font-weight: 700;
+    color: white;
+    position: absolute; /* Pastikan posisinya absolut */
+    white-space: nowrap;
+   
+}
+/* Style untuk konten dalam timeline */
+.timeline-content {
+    background-color: var(--bg-color);
+    border: 2px solid var(--main-color);
+    padding: 20px 30px; /* Padding dikurangi agar lebih kompak */
+    border-radius: 2rem;
+    box-shadow: 0 0 10px var(--main-color);
+    transition: 0.3s ease-in-out;
+    width: 90%; /* Lebar konten disesuaikan */
+    margin-top: 40px; /* Menambahkan jarak antara tanggal dan kolom konten */
+}
+
+/* Efek hover pada konten timeline */
+.timeline-content:hover{
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--main-color);
+}
+
+/* Style untuk heading dalam konten timeline */
+.timeline-content h3{
+    font-size: 1.8rem; /* Ukuran font heading disesuaikan */
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Style untuk paragraf dalam konten timeline */
+.timeline-content p{
+    color: white;
+    font-size: 1.4rem; /* Ukuran font deskripsi disesuaikan */
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Style untuk scrollbar */
+::-webkit-scrollbar{
+    width: 15px;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: var(--main-color);
+}
+
+::-webkit-scrollbar-track{
+    background-color: var(--bg-color);
+}
+
+.skills-section {
+    padding: 70px 15px; /* Increased padding for more spacing */
+    background: var(--second-bg-color);
+    text-align: center;
+}
+
+.skills-section h2 {
+    font-size: 5rem; /* Increased title size */
+    color: var(--text-color); /* Matches the main color used for titles */
+    margin-bottom: 6rem; /* Added more space below the title */
+    text-transform: uppercase; /* Optional: makes the title uppercase */
+    letter-spacing: 0.1rem; /* Optional: adds spacing between letters */
+}
+
+.skills {
+    display: flex;
+    justify-content: center;
+    gap: 2rem; /* Increased gap between skill boxes */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+.skill {
+    flex: 1 1 180px; /* Increased minimum width */
+    max-width: 250px; /* Increased max size of each box */
+    padding: 2rem; /* More padding inside each skill box */
+    background-color: var(--second-bg-color);
+    color: var(--text-color);
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.skill i {
+    font-size: 4rem; /* Increased icon size */
+    color: var(--main-color);
+    margin-bottom: 1.5rem; /* Added more space below the icon */
+}
+
+.skill p {
+    font-size: 1.8rem; /* Larger text size */
+    color: var(--text-color);
+}
+
+.skill:hover {
+    transform: scale(1.08); /* Slightly larger scale effect on hover */
+}
+
+/* Additional media query for smaller screens */
+@media (max-width: 768px) {
+    .skills-section h2 {
+        font-size: 4rem; /* Smaller title on tablets */
+        margin-bottom: 4rem;
+    }
+
+    .skills {
+        gap: 1.5rem; /* Slightly smaller gap between skill boxes */
+    }
+
+    .skill {
+        max-width: 220px; /* Reduced max size on smaller screens */
+    }
+
+    .skill p {
+        font-size: 1.6rem; /* Adjusted text size */
+    }
+
+    .skill i {
+        font-size: 3.5rem; /* Adjusted icon size */
+    }
+}
+
+@media (max-width: 480px) {
+    .skills-section h2 {
+        font-size: 3rem; /* Smaller title on mobile */
+        margin-bottom: 3rem;
+    }
+
+    .skill p {
+        font-size: 1.5rem; /* Slightly smaller text size on mobile */
+    }
+
+    .skill i {
+        font-size: 3rem; /* Smaller icon size */
+    }
+}
+
+/* My Projects Section */
+.project-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: var(--second-bg-color);
+}
+
+.project-section h2 {
+    font-size: 4.5rem; /* Large title */
+    margin-bottom: 5rem; /* Increased margin for spacing */
+    color: var(--text-color);
+}
+
+.project-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.project-card {
+    background-color: var(--second-bg-color);
+    width: 45%; /* Two columns */
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    transition: transform 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 1rem; /* Adds padding at the bottom */
+}
+
+.project-card:hover {
+    transform: scale(1.03);
+}
+
+.project-card img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.project-info {
+    padding: 15px;
+}
+
+.project-info h3 {
+    font-size: 2rem; /* Larger title for projects */
+    margin: 10px 0;
+    color: var(--text-color);
+}
+
+.project-info p {
+    font-size: 1.6rem; /* Larger description */
+    color: var(--text-color);
+    line-height: 1.7;
+    min-height: 80px; /* Sets a consistent height for descriptions */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .project-container {
+        flex-direction: column; /* Stack columns on smaller screens */
+        align-items: center; /* Center-aligns project cards */
+        gap: 1.5rem;
+    }
+
+    .project-card {
+        width: 90%; /* Full width on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .project-section h2 {
+        font-size: 3.5rem; /* Smaller title for mobile */
+    }
+
+    .project-info h3 {
+        font-size: 1.6rem; /* Slightly smaller titles on mobile */
+    }
+
+    .project-info p {
+        font-size: 1.4rem;
+    }
+}
+
+.service-section {
+    background-color: #0e0e0e; /* Dark background */
+    padding: 60px 0;
+    text-align: center;
+}
+
+.service-section .heading {
+    color: var(--main-color); /* Use variable for main color */
+    font-size: 4rem;
+    margin-bottom: 40px;
+}
+
+.service-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for the first row */
+    gap: 30px;
+    max-width: 1000px; /* Increased max-width for wider columns */
+    margin: 0 auto;
+}
+
+.service-box {
+    background-color: #00ffff; /* Bright cyan */
+    color: #000;
+    padding: 40px 30px; /* Increased padding for wider appearance */
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+/* Center the third box in the second row */
+.service-container > .service-box:nth-child(3) {
+    grid-column: 1 / span 2; /* Span across both columns */
+    width: 70%; /* Slightly wider width */
+    margin: 0 auto; /* Center align */
+}
+
+.service-box:hover,
+.service-box:active {
+    background-color: #ffffff; /* White background on hover and active */
+    color: #000; /* Keep text color black */
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.service-box h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.service-box p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .service-container {
+        grid-template-columns: 1fr; /* Tetap satu kolom */
+        gap: 20px; /* Menambah jarak antar kolom */
+        max-width: 85%; /* Mengurangi lebar maksimal kontainer */
+        margin: 0 auto; /* Rata tengah */
+    }
+
+    .service-container > .service-box:nth-child(3) {
+        width: 100%; /* Agar sesuai dengan lebar kontainer yang lebih kecil */
+        grid-column: auto; /* Tidak menempati dua kolom */
+    }
+}
+  
+.contact{
+    background-color: var(--bg-color);
+    padding: 7rem 2rem;
+    text-align: center;
+}
+.contact .contact-info{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Lebar minimum dikurangi */
+    gap: 3rem;
+    margin-top: 4rem;
+    justify-content: center; /* Pusatkan grid */
+}
+.contact .info-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--second-bg-color);
+    padding: 2.5rem; /* Padding dikurangi sedikit */
+    border-radius: 2rem;
+    border: 2px solid var(--main-color);
+    width: 80%; /* Membuat lebar info-box tidak terlalu besar */
+    max-width: 400px; /* Lebar maksimum */
+    margin: 0 auto; /* Center box */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    text-align: center; /* Pusatkan seluruh teks di dalam box */
+}
+.contact .info-box:hover {
+    transform: scale(1.05);
+}
+.contact .info-box i {
+    font-size: 4rem;
+    color: var(--main-color);
+}
+.contact .info-box h3 {
+    font-size: 2.5rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+}
+.contact .info-box p {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+.contact .info-box p.hours {
+    text-align: center; /* Pusatkan teks jam kerja */
+    font-size: 1.6rem; /* Sesuaikan ukuran font untuk jam kerja */
+    margin-top: 1rem;
+    width: 100%; /* Agar teks menyesuaikan lebar box */
+    justify-content: center; /* Pastikan jam kerja tepat di tengah */
+}
+.contact form {
+    max-width: 600px; /* Batasi lebar maksimum form */
+    margin: 5rem auto; /* Jarak form dari elemen di atasnya */
+    text-align: center;
+}
+
+.contact form .input-group,
+.contact form .input-group-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Jarak antara input dan textarea */
+}
+
+.contact form .input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact form .input-box input,
+.contact form textarea {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    color: var(--text-color);
+    background: var(--second-bg-color);
+    border-radius: 1rem;
+    border: 2px solid var(--main-color);
+    margin: 1rem 0;
+}
+
+.contact form .btn {
+    margin-top: 2rem;
+    padding: 1.2rem 2.5rem;
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: var(--main-color);
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.contact form .btn:hover {
+    background-color: darken(var(--main-color), 10%);
+}
+
+.footer{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding: 40px 0;
+    background-color: var(--second-bg-color);
+}
+.footer .social-icons{
+    text-align: center;
+    padding-bottom: 25px;
+    color: var(--main-color);
+}
+.footer .social-icons a{
+    font-size: 25px;    
+    color: var(--main-color);   
+    border: 2px solid var(--main-color);  
+    width: 42px;  
+    height: 42px;  
+    line-height: 42px;   
+    display: inline-block;   
+    text-align: center;  
+    border-radius: 50%;  
+    margin: 0 10px;   
+    transition: 0.3s ease-in-out;  
+}
+.footer .social a:hover{
+    transform: scale(1.2)translateY(-10px); 
+    background-color: var(--main-color);  
+    color: black;   
+    box-shadow: 0 0 25px var(--main-color);
+}
+.footer ul{
+    margin-top: 0;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 0;
+    text-align: center;
+}
+.footer ul li a{
+    color: white;
+    border-bottom: 3px solid transparent;
+    transition: 0.3s ease-in-out;
+}
+.footer ul li a:hover{
+    border-bottom: 3px solid var(--main-color);
+}
+.footer ul li{
+    display: inline-block;
+    padding: 0 15px;
+}
+.footer .copyright{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+}
+@media(max-width:895px){
+    #menu-icon{
+        display: block;
+    }
+    .navbar{
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 50%;
+        padding: 1rem 3%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom-left-radius: 2rem;
+        border-left: 2px solid var(--main-color);
+        border-bottom: 2px solid var(--main-color);
+        display: none;
+    }
+    .navbar.active{
+        display: block;
+    }
+    .navbar a{
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+        color: white;
+    }
+    .home{
+        flex-direction: column-reverse;
+        margin: 5rem 4rem;
+    }
+    .home-content h3{
+        font-size: 2.6rem;
+    }
+    .home-content h1{
+        font-size: 8rem;
+        margin-top: 3rem;
+    }
+    .home-content p{
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .home-img img{
+        width: 56vw;
+    }
+    .services h2{
+        margin-bottom: 3rem;
+    }
+    .services-container{
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+
+#installButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px; /* Lebar lebih besar untuk bentuk oval */
+    height: 50px; /* Tinggi lebih kecil untuk bentuk oval */
+    background-color: #007bff; /* Warna biru */
+    color: white;
+    border: 2px solid white; /* Border putih agar lebih menonjol */
+    border-radius: 25px; /* Membuat bentuk oval */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold; /* Menebalkan font */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+#installButton:hover {
+    transform: scale(1.1); /* Membesarkan saat hover */
+}
+
+.install-icon {
+    font-size: 18px; /* Ukuran ikon panah lebih kecil */
+    margin-bottom: -5px; /* Mengurangi jarak antara ikon dan teks */
+}
+
+.install-text {
+    font-size: 12px; /* Ukuran teks untuk tulisan */
+}
