@@ -66,22 +66,29 @@ const storeName = 'contacts';
 
 function openDatabase() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, 1);
+        const request = indexedDB.open(dbName, 1); // Versi database = 1
 
-        // Upgrade needed to create object store
+        // Jika ada upgrade pada database, buat objek store
         request.onupgradeneeded = (event) => {
-            console.log('onupgradeneeded: Creating object store');
             const db = event.target.result;
+            console.log("onupgradeneeded triggered");
+            
+            // Cek apakah objek store sudah ada
             if (!db.objectStoreNames.contains(storeName)) {
+                const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
                 console.log(`Object store "${storeName}" created.`);
+            } else {
+                console.log(`Object store "${storeName}" already exists.`);
             }
         };
 
+        // Log ketika database berhasil dibuka
         request.onsuccess = (event) => {
             console.log('Database opened successfully');
-            resolve(event.target.result);
+            resolve(event.target.result); // Resolving database
         };
 
+        // Log error jika database gagal dibuka
         request.onerror = (event) => {
             console.error('Database error:', event.target.errorCode);
             reject(`Database error: ${event.target.errorCode}`);
@@ -91,44 +98,52 @@ function openDatabase() {
 
 // Add contact data to IndexedDB
 async function addContact(contact) {
-    const db = await openDatabase();
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.objectStore(storeName);
-    
-    store.add(contact);
+    try {
+        const db = await openDatabase(); // Pastikan membuka database yang benar
+        const tx = db.transaction(storeName, 'readwrite');
+        const store = tx.objectStore(storeName);
+        
+        store.add(contact); // Menambahkan data kontak ke IndexedDB
 
-    tx.oncomplete = () => {
-        console.log('Contact added to IndexedDB:', contact);
-        getAllContacts(); // Retrieve and log all contacts after adding a new one
-    };
+        tx.oncomplete = () => {
+            console.log('Contact added to IndexedDB:', contact);
+            getAllContacts(); // Ambil semua kontak setelah data ditambahkan
+        };
 
-    tx.onerror = (event) => {
-        console.error('Error adding contact:', event.target.error);
-    };
+        tx.onerror = (event) => {
+            console.error('Error adding contact:', event.target.error);
+        };
+    } catch (error) {
+        console.error("Error adding contact:", error);
+    }
 }
 
 // Retrieve all contacts from IndexedDB
 async function getAllContacts() {
-    const db = await openDatabase();
-    const tx = db.transaction(storeName, 'readonly');
-    const store = tx.objectStore(storeName);
-    
-    const request = store.getAll();
+    try {
+        const db = await openDatabase(); // Pastikan membuka database yang benar
+        const tx = db.transaction(storeName, 'readonly');
+        const store = tx.objectStore(storeName);
+        
+        const request = store.getAll(); // Ambil semua data kontak
 
-    request.onsuccess = (event) => {
-        console.log('All contacts:', event.target.result);
-    };
+        request.onsuccess = (event) => {
+            console.log('All contacts:', event.target.result); // Menampilkan semua kontak di console
+        };
 
-    request.onerror = (event) => {
-        console.error('Error retrieving contacts:', event.target.error);
-    };
+        request.onerror = (event) => {
+            console.error('Error retrieving contacts:', event.target.error);
+        };
+    } catch (error) {
+        console.error("Error getting contacts:", error);
+    }
 }
 
 // Save contact from the form
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
     
-    // Retrieve form data
+    // Ambil data dari form
     const contact = {
         name: document.querySelector('input[placeholder="Full Name"]').value,
         email: document.querySelector('input[placeholder="Email"]').value,
@@ -137,10 +152,10 @@ document.querySelector('form').addEventListener('submit', (event) => {
         message: document.querySelector('textarea[placeholder="Your Message"]').value
     };
     
-    addContact(contact); // Save contact to IndexedDB
+    addContact(contact); // Menyimpan kontak ke IndexedDB
     alert("Contact saved to database!");
 
-    // Clear the form fields after saving
+    // Reset form setelah data disimpan
     document.querySelector('input[placeholder="Full Name"]').value = '';
     document.querySelector('input[placeholder="Email"]').value = '';
     document.querySelector('input[placeholder="Phone Number"]').value = '';
@@ -152,11 +167,8 @@ document.querySelector('form').addEventListener('submit', (event) => {
 window.onload = () => {
     openDatabase().then(() => {
         console.log('IndexedDB should be initialized now.');
-        getAllContacts();
+        getAllContacts();  // Memastikan bahwa data sudah ada di IndexedDB
     }).catch(error => {
         console.error('IndexedDB initialization failed:', error);
     });
 };
-
-// Call getAllContacts to display data in console
-getAllContacts();
