@@ -119,6 +119,13 @@ async function addContact(contact) {
 async function getAllContacts() {
     try {
         const db = await openDatabase();
+
+        // Cek apakah object store ada di database
+        if (!db.objectStoreNames.contains(storeName)) {
+            console.error(`Object store "${storeName}" tidak ditemukan di database.`);
+            return;
+        }
+
         const tx = db.transaction(storeName, 'readonly');
         const store = tx.objectStore(storeName);
 
@@ -158,7 +165,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
 // Inisialisasi database pada saat halaman dimuat
 window.onload = () => {
     openDatabase().then(() => {
-        console.log('IndexedDB seharusnya sudah terinisialisasi sekarang.');
+        console.log('IndexedDB berhasil diinisialisasi.');
         getAllContacts();
     }).catch(error => {
         console.error('Inisialisasi IndexedDB gagal:', error);
