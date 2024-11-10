@@ -282,18 +282,20 @@ span {
     }
 
     .home-content h1 {
-        font-size: 5rem; /* Ukuran teks lebih kecil di layar kecil */
-        line-height: 1.2; /* Menambah jarak antara garis teks */
+        font-size: 3rem; /* Ukuran teks lebih kecil di layar kecil */
+        line-height: 1; /* Menambah jarak antara garis teks */
         word-break: break-word; /* Membuat teks tidak meluap dan terpotong */
     }
 
     .home-content h3 {
-        font-size: 2rem; /* Ukuran teks sub-judul lebih kecil */
+        font-size: 3.5rem; /* Ukuran teks sub-judul lebih kecil */
+        margin: 1.5rem;
+        justify-content: center;
     }
 
     .home-content p {
-        font-size: 1.2rem; /* Ukuran paragraf dikurangi */
-        margin: 0.5rem 0; /* Jarak antar paragraf */
+        font-size: 1.5rem; /* Ukuran paragraf dikurangi */
+        margin: 1rem; /* Jarak antar paragraf */
     }
 
     .home-img {
@@ -321,16 +323,44 @@ span {
 
 @media (max-width: 480px) {
     .home-content h1 {
-        font-size: 3.5rem; /* Ukuran teks lebih kecil pada layar sangat kecil */
-        line-height: 1.2; /* Menjaga jarak antara baris */
+        font-size: 2.8rem; /* Adjust the overall font size */
+        line-height: 1.2;
+    }
+    .home-content h1 .highlight-name { /* Target "Mufida" specifically */
+        font-size: 6.5rem; /* Slightly smaller size for "Mufida" */
+        display: inline-block; /* Ensures it stays centered under "Hi, It's" */
+        white-space: normal; /* Allow line break without splitting "Mufida" */
     }
 
     .home-content h3 {
-        font-size: 1.5rem; /* Ukuran sub-judul lebih kecil */
+        font-size: 3rem; /* Set an appropriate size between the title and the body text */
+        margin: 1.5rem 0; /* Add margin above and below for spacing */
+        text-align: center; /* Center the text */
     }
+    
+    .home-content p {
+        font-size: 1.5rem; /* Smaller font size for the paragraph text */
+        margin: 0.5rem 0; /* Space out paragraphs */
+        text-align: center; /* Center-align the paragraph text */
+    }    
 
     .home-img img {
         width: 70vw; /* Ukuran gambar lebih kecil di layar sangat kecil */
+    }
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem; /* Adjust spacing between icons */
+    }
+
+    .social-icons a {
+        width: 30px; /* Smaller size for icon circles */
+        height: 30px; /* Smaller size for icon circles */
+        font-size: 2rem; /* Adjust icon font size */
+    }
+
+    .social-icons a i {
+        line-height: 30px; /* Center icon vertically */
     }
 }
 
@@ -840,7 +870,7 @@ span {
     bottom: 0;
     width: 100%;
     padding: 40px 0;
-    background-color: var(--second-bg-color);
+    background-color: #1c1b1b;
 }
 .footer .social-icons{
     text-align: center;
@@ -912,11 +942,13 @@ span {
     .navbar.active{
         display: block;
     }
-    .navbar a{
+    .navbar a {
         display: block;
         font-size: 2rem;
-        margin: 3rem 0;
+        margin: 3rem 0; /* Space between each navbar link */
+        padding: 1rem 0; /* Extra padding for space within each link */
         color: white;
+        text-decoration: none; /* Removes underline if present */
     }
     .home{
         flex-direction: column-reverse;
