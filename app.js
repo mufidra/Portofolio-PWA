@@ -66,13 +66,13 @@ const storeName = 'contacts';
 
 function openDatabase() {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open(dbName, 1); // dbVersion = 1, pertama kali membuka
+        const request = indexedDB.open(dbName, 1);
 
         // Upgrade needed to create object store
         request.onupgradeneeded = (event) => {
+            console.log('onupgradeneeded: Creating object store');
             const db = event.target.result;
             if (!db.objectStoreNames.contains(storeName)) {
-                const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
                 console.log(`Object store "${storeName}" created.`);
             }
         };
@@ -152,7 +152,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
 window.onload = () => {
     openDatabase().then(() => {
         console.log('IndexedDB should be initialized now.');
-        getAllContacts();  // Call getAllContacts to ensure data is loaded and logged
+        getAllContacts();
     }).catch(error => {
         console.error('IndexedDB initialization failed:', error);
     });
@@ -160,4 +160,3 @@ window.onload = () => {
 
 // Call getAllContacts to display data in console
 getAllContacts();
-
