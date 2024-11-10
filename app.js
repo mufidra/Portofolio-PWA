@@ -96,32 +96,13 @@ function openDatabase() {
     });
 }
 
-// Add contact data to IndexedDB
-async function addContact(contact) {
-    try {
-        const db = await openDatabase(); // Pastikan membuka database yang benar
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
-        
-        store.add(contact); // Menambahkan data kontak ke IndexedDB
-
-        tx.oncomplete = () => {
-            console.log('Contact added to IndexedDB:', contact);
-            getAllContacts(); // Ambil semua kontak setelah data ditambahkan
-        };
-
-        tx.onerror = (event) => {
-            console.error('Error adding contact:', event.target.error);
-        };
-    } catch (error) {
-        console.error("Error adding contact:", error);
-    }
-}
-
 // Retrieve all contacts from IndexedDB
 async function getAllContacts() {
     try {
         const db = await openDatabase(); // Pastikan membuka database yang benar
+        if (!db.objectStoreNames.contains(storeName)) {
+            throw new Error(`Object store "${storeName}" does not exist.`);
+        }
         const tx = db.transaction(storeName, 'readonly');
         const store = tx.objectStore(storeName);
         
