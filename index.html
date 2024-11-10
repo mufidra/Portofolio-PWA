@@ -31,25 +31,6 @@
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    // Register Service Worker and use it in Firebase Messaging
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then((registration) => {
-                // Set the service worker for Firebase Messaging
-                messaging.useServiceWorker(registration);
-                console.log('Service Worker berhasil didaftarkan:', registration);
-                
-                // Request permission and get token only after setting useServiceWorker
-                return messaging.getToken({vapidKey: "BIj-4Qr7MNXRqnq5koAR7g1-aZpj0_rwdYUZtTBNxGfyN7O8CzXrNevR9hEiQdeh49orRMriHdLnxhCMObLidwA"});
-            })
-            .then((token) => {
-                console.log("Device token:", token);
-            })
-            .catch((error) => {
-                console.error("Service Worker gagal didaftarkan atau gagal mendapatkan token:", error);
-            });
-    }
-
     // Handle foreground messages
     messaging.onMessage((payload) => {
         console.log('Message received: ', payload);
