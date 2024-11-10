@@ -4,12 +4,12 @@ const precachedAssets = [
     '/index.html',
     '/style.css',
     '/script.js',
-    '/images/image.jpg',
-    '/images/image-icon.png',
+    '/image.jpg',
+    '/image-icon.png',
     '/app.js',
     '/manifest.json',
-    '/images/image1.png',
-    '/images/image2.png',
+    '/image1.png',
+    '/image2.png',
     '/firebase-messaging-sw.js'
 ];
 
