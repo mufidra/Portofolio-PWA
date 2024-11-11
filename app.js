@@ -173,29 +173,30 @@ getAllContacts();
 
 // Memeriksa apakah service worker didukung oleh browser
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/Portofolio-PWA/sw.js')
-      .then(registration => {
-        console.log('Service Worker terdaftar:', registration);
-      })
-      .catch(error => {
-        console.error('Pendaftaran Service Worker gagal:', error);
-      });
-  }
-  
-  // Meminta izin notifikasi secara otomatis saat halaman dimuat
-  if ('Notification' in window) {
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        // Jika izin diberikan, mengirim pesan ke service worker untuk menampilkan notifikasi
-        if (navigator.serviceWorker.controller) {
-          navigator.serviceWorker.controller.postMessage({
-            type: 'SHOW_NOTIFICATION'
-          });
-        }
-      } else {
-        console.log('Izin notifikasi ditolak atau belum dipilih.');
-      }
+  navigator.serviceWorker.register('/Portofolio-PWA/sw.js')
+    .then(registration => {
+      console.log('Service Worker terdaftar:', registration);
+    })
+    .catch(error => {
+      console.error('Pendaftaran Service Worker gagal:', error);
     });
-  } else {
-    console.log('Browser tidak mendukung Notification API.');
-  }
+}
+
+// Meminta izin notifikasi secara otomatis saat halaman dimuat
+if ('Notification' in window) {
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') {
+      console.log('Izin notifikasi diberikan');
+      // Jika izin diberikan, kirim pesan ke service worker untuk menampilkan notifikasi
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'SHOW_NOTIFICATION'
+        });
+      }
+    } else {
+      console.log('Izin notifikasi ditolak atau belum dipilih.');
+    }
+  });
+} else {
+  console.log('Browser tidak mendukung Notification API.');
+}
