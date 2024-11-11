@@ -33,9 +33,11 @@ navbarLinks.forEach(link => {
 
 // Service Worker registration
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(reg => {
-        console.log('Service Worker registered:', reg);
-    }).catch(err => console.error('Service Worker registration failed:', err));
+    navigator.serviceWorker.register('/Portofolio-PWA/sw.js') // ganti dengan path absolut
+        .then(reg => {
+            console.log('Service Worker registered:', reg);
+        })
+        .catch(err => console.error('Service Worker registration failed:', err));
 }
 
 let deferredPrompt;
@@ -68,11 +70,11 @@ function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(dbName, 1);
 
-        // Upgrade needed to create object store
         request.onupgradeneeded = (event) => {
             console.log('onupgradeneeded: Creating object store');
             const db = event.target.result;
             if (!db.objectStoreNames.contains(storeName)) {
+                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
                 console.log(`Object store "${storeName}" created.`);
             }
         };
@@ -107,21 +109,29 @@ async function addContact(contact) {
     };
 }
 
-// Retrieve all contacts from IndexedDB
 async function getAllContacts() {
-    const db = await openDatabase();
-    const tx = db.transaction(storeName, 'readonly');
-    const store = tx.objectStore(storeName);
-    
-    const request = store.getAll();
+    try {
+        const db = await openDatabase();
+        if (!db.objectStoreNames.contains(storeName)) {
+            console.error(`Object store "${storeName}" not found.`);
+            return;
+        }
 
-    request.onsuccess = (event) => {
-        console.log('All contacts:', event.target.result);
-    };
+        const tx = db.transaction(storeName, 'readonly');
+        const store = tx.objectStore(storeName);
 
-    request.onerror = (event) => {
-        console.error('Error retrieving contacts:', event.target.error);
-    };
+        const request = store.getAll();
+
+        request.onsuccess = (event) => {
+            console.log('All contacts:', event.target.result);
+        };
+
+        request.onerror = (event) => {
+            console.error('Error retrieving contacts:', event.target.error);
+        };
+    } catch (error) {
+        console.error('Error in getAllContacts:', error);
+    }
 }
 
 // Save contact from the form
@@ -163,7 +173,7 @@ getAllContacts();
 
 // Memeriksa apakah service worker didukung oleh browser
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
+    navigator.serviceWorker.register('/Portofolio-PWA/sw.js')
       .then(registration => {
         console.log('Service Worker terdaftar:', registration);
       })
