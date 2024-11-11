@@ -33,7 +33,7 @@ navbarLinks.forEach(link => {
 
 // Service Worker registration
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').then(reg => {
+    navigator.serviceWorker.register('/sw.js').then(reg => {
         console.log('Service Worker registered:', reg);
     }).catch(err => console.error('Service Worker registration failed:', err));
 }
@@ -68,85 +68,67 @@ function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(dbName, 1);
 
+        // Upgrade needed to create object store
         request.onupgradeneeded = (event) => {
+            console.log('onupgradeneeded: Creating object store');
             const db = event.target.result;
-            console.log("onupgradeneeded dipanggil");
-
-            // Cek apakah object store sudah ada; jika belum, buat
             if (!db.objectStoreNames.contains(storeName)) {
-                db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-                console.log(`Object store "${storeName}" dibuat.`);
-            } else {
-                console.log(`Object store "${storeName}" sudah ada.`);
+                console.log(`Object store "${storeName}" created.`);
             }
         };
 
         request.onsuccess = (event) => {
-            console.log('Database berhasil dibuka');
-            resolve(event.target.result); // Mengembalikan database
+            console.log('Database opened successfully');
+            resolve(event.target.result);
         };
 
         request.onerror = (event) => {
-            console.error('Kesalahan database:', event.target.errorCode);
-            reject(`Kesalahan database: ${event.target.errorCode}`);
+            console.error('Database error:', event.target.errorCode);
+            reject(`Database error: ${event.target.errorCode}`);
         };
     });
 }
 
-// Fungsi untuk menambahkan kontak ke IndexedDB
+// Add contact data to IndexedDB
 async function addContact(contact) {
-    try {
-        const db = await openDatabase();
-        const tx = db.transaction(storeName, 'readwrite');
-        const store = tx.objectStore(storeName);
+    const db = await openDatabase();
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    
+    store.add(contact);
 
-        store.add(contact);
+    tx.oncomplete = () => {
+        console.log('Contact added to IndexedDB:', contact);
+        getAllContacts(); // Retrieve and log all contacts after adding a new one
+    };
 
-        tx.oncomplete = () => {
-            console.log('Kontak ditambahkan ke IndexedDB:', contact);
-            getAllContacts();
-        };
-
-        tx.onerror = (event) => {
-            console.error('Kesalahan saat menambahkan kontak:', event.target.error);
-        };
-    } catch (error) {
-        console.error("Kesalahan saat menambahkan kontak:", error);
-    }
+    tx.onerror = (event) => {
+        console.error('Error adding contact:', event.target.error);
+    };
 }
 
-// Fungsi untuk mengambil semua kontak dari IndexedDB
+// Retrieve all contacts from IndexedDB
 async function getAllContacts() {
-    try {
-        const db = await openDatabase();
+    const db = await openDatabase();
+    const tx = db.transaction(storeName, 'readonly');
+    const store = tx.objectStore(storeName);
+    
+    const request = store.getAll();
 
-        // Cek apakah object store ada di database
-        if (!db.objectStoreNames.contains(storeName)) {
-            console.error(`Object store "${storeName}" tidak ditemukan di database.`);
-            return;
-        }
+    request.onsuccess = (event) => {
+        console.log('All contacts:', event.target.result);
+    };
 
-        const tx = db.transaction(storeName, 'readonly');
-        const store = tx.objectStore(storeName);
-
-        const request = store.getAll();
-
-        request.onsuccess = (event) => {
-            console.log('Semua kontak:', event.target.result);
-        };
-
-        request.onerror = (event) => {
-            console.error('Kesalahan saat mengambil kontak:', event.target.error);
-        };
-    } catch (error) {
-        console.error("Kesalahan saat mengambil kontak:", error);
-    }
+    request.onerror = (event) => {
+        console.error('Error retrieving contacts:', event.target.error);
+    };
 }
 
-// Menyimpan kontak dari form
+// Save contact from the form
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
-
+    
+    // Retrieve form data
     const contact = {
         name: document.querySelector('input[placeholder="Full Name"]').value,
         email: document.querySelector('input[placeholder="Email"]').value,
@@ -154,22 +136,56 @@ document.querySelector('form').addEventListener('submit', (event) => {
         subject: document.querySelector('input[placeholder="Subject"]').value,
         message: document.querySelector('textarea[placeholder="Your Message"]').value
     };
+    
+    addContact(contact); // Save contact to IndexedDB
+    alert("Contact saved to database!");
 
-    addContact(contact);
-    alert("Kontak berhasil disimpan ke database!");
-
-    // Reset form
-    document.querySelector('form').reset();
+    // Clear the form fields after saving
+    document.querySelector('input[placeholder="Full Name"]').value = '';
+    document.querySelector('input[placeholder="Email"]').value = '';
+    document.querySelector('input[placeholder="Phone Number"]').value = '';
+    document.querySelector('input[placeholder="Subject"]').value = '';
+    document.querySelector('textarea[placeholder="Your Message"]').value = '';
 });
 
-// Inisialisasi database pada saat halaman dimuat
+// Test database initialization on page load
 window.onload = () => {
     openDatabase().then(() => {
-        console.log('IndexedDB berhasil diinisialisasi.');
+        console.log('IndexedDB should be initialized now.');
         getAllContacts();
     }).catch(error => {
-        console.error('Inisialisasi IndexedDB gagal:', error);
+        console.error('IndexedDB initialization failed:', error);
     });
 };
+
 // Call getAllContacts to display data in console
 getAllContacts();
+
+// Memeriksa apakah service worker didukung oleh browser
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(registration => {
+        console.log('Service Worker terdaftar:', registration);
+      })
+      .catch(error => {
+        console.error('Pendaftaran Service Worker gagal:', error);
+      });
+  }
+  
+  // Meminta izin notifikasi secara otomatis saat halaman dimuat
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        // Jika izin diberikan, mengirim pesan ke service worker untuk menampilkan notifikasi
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: 'SHOW_NOTIFICATION'
+          });
+        }
+      } else {
+        console.log('Izin notifikasi ditolak atau belum dipilih.');
+      }
+    });
+  } else {
+    console.log('Browser tidak mendukung Notification API.');
+  }
