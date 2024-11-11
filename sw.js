@@ -71,7 +71,7 @@ function showNotification() {
   const title = 'Hallo!';
   const options = {
     body: 'Selamat Datang di Web Portofolio Mufida. Terimakasih telah mengunjungi!',
-    icon: '/image-icon.png'
+    icon: '/Portofolio-PWA/image-icon.png'
   };
 
   // Menampilkan notifikasi
@@ -97,7 +97,7 @@ self.addEventListener('notificationclick', event => {
 self.addEventListener('push', function(event) {
   const options = {
     body: event.data.text(),
-    icon: '/image-icon.png',
+    icon: '/Portofolio-PWA/image-icon.png',
   };
 
   event.waitUntil(
