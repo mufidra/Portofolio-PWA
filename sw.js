@@ -10,7 +10,6 @@ const precachedAssets = [
     '/manifest.json',
     '/image1.png',
     '/image2.png',
-    '/firebase-messaging-sw.js'
 ];
 
 self.addEventListener('install', (event) => {
@@ -72,7 +71,7 @@ self.addEventListener('fetch', (event) => {
     const title = 'Hallo!';
     const options = {
       body: 'Selamat Datang di Web Portofolio Mufida. Terimakasih telah mengunjungi!',
-      icon: '/path/to/image-icon.png'
+      icon: '/Portofolio-PWA/image-icon.png'
     };
   
     // Menampilkan notifikasi
@@ -83,6 +82,6 @@ self.addEventListener('fetch', (event) => {
   self.addEventListener('notificationclick', event => {
     event.notification.close(); // Menutup notifikasi saat diklik
     event.waitUntil(
-      clients.openWindow('https://mufidra.github.io/Portofolio-PWA/#home') // URL yang akan dibuka saat notifikasi diklik
+      clients.openWindow('https://mufidra.github.io/Portofolio-PWA/') // URL yang akan dibuka saat notifikasi diklik
     );
   });
