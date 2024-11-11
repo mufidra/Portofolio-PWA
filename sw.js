@@ -66,3 +66,23 @@ self.addEventListener('fetch', (event) => {
         event.respondWith(fetch(event.request));
     }
 });
+
+// Fungsi untuk menampilkan notifikasi
+  function showNotification() {
+    const title = 'Hallo!';
+    const options = {
+      body: 'Selamat Datang di Web Portofolio Mufida. Terimakasih telah mengunjungi!',
+      icon: '/path/to/image-icon.png'
+    };
+  
+    // Menampilkan notifikasi
+    self.registration.showNotification(title, options);
+  }
+  
+  // Menangani klik pada notifikasi
+  self.addEventListener('notificationclick', event => {
+    event.notification.close(); // Menutup notifikasi saat diklik
+    event.waitUntil(
+      clients.openWindow('https://mufidra.github.io/Portofolio-PWA/#home') // URL yang akan dibuka saat notifikasi diklik
+    );
+  });
