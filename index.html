@@ -11,39 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="image icon" href="image-icon.png">
 </head>
-
-<!-- Tambahkan Firebase SDK di file HTML utama -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
-<!-- index.html -->
-<script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDeyih0XS5OagXvdzqRkIuv8i7zI1wvfIA",
-        authDomain: "portofolio-9f9aa.firebaseapp.com",
-        projectId: "portofolio-9f9aa",
-        storageBucket: "portofolio-9f9aa.firebasestorage.app",
-        messagingSenderId: "513246485833",
-        appId: "1:513246485833:web:74c1bbc050507c47564e98",
-        measurementId: "G-VV29KXSFYN"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    // Handle foreground messages
-    messaging.onMessage((payload) => {
-        console.log('Message received: ', payload);
-        const messagesElement = document.querySelector('.message');
-        const dataHeaderElement = document.createElement('h5');
-        const dataElement = document.createElement('pre');
-        dataHeaderElement.textContent = "Message Received:";
-        dataElement.textContent = JSON.stringify(payload, null, 2);
-        messagesElement.appendChild(dataHeaderElement);
-        messagesElement.appendChild(dataElement);
-    });
-</script>
-
+    
 <body>
     <header class="header">
         <a href="#home" class="logo">Mufida <span>Anggradita</span></a>
@@ -65,7 +33,7 @@
             <p>Halo nama saya Mufida Anggradita.</p>
             <p>Saya adalah mahasiswa STMIK Tegal Prodi Sistem Informasi.</p>
             <p>Saya lahir di Tegal, 15 September 2024. Saat ini saya tinggal di</p>
-            <p>Jalan Gajah Mada, Kota Tegal.</p>
+            <p>Jalan Gajah Mada Gg. Cerme, Kota Tegal.</p>
             <p>Berkuliah di Jurusan Sistem Informasi, saya mempunyai minat di bidang data analyst, design graphic, microsoft, dan management information system.</p>
         
             <div class="social-icons">
@@ -204,7 +172,7 @@
                 <i class="fas fa-phone-alt"></i>
                 <div>
                     <h3>Phone</h3>
-                    <p>+82 878 7219 5718</p>
+                    <p>+62 878 7219 5718</p>
                 </div>
             </div>
             <div class="info-box">
